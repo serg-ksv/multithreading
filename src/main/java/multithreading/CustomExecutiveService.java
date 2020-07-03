@@ -28,25 +28,25 @@ public class CustomExecutiveService {
         return callableTasks;
     }
 
-    public List<Future<Long>> getFutureList(List<Callable<Long>> callableTasks) throws Exception {
+    public List<Future<Long>> getFutureList(List<Callable<Long>> callableTasks) {
         var executorService = Executors.newFixedThreadPool(numberOfThreads);
         List<Future<Long>> futureList;
         try {
             futureList = executorService.invokeAll(callableTasks);
         } catch (InterruptedException e) {
-            throw new Exception("Can't invoke callable tasks", e);
+            throw new RuntimeException("Can't invoke callable tasks", e);
         }
         executorService.shutdown();
         return futureList;
     }
 
-    public long getSumOfElements(List<Future<Long>> futureList) throws Exception {
+    public long getSumOfElements(List<Future<Long>> futureList) {
         long sumOfElements = 0;
         for (var future : futureList) {
             try {
                 sumOfElements += future.get();
             } catch (InterruptedException | ExecutionException e) {
-                throw new Exception("Can't retrieve elements from futures", e);
+                throw new RuntimeException("Can't retrieve elements from futures", e);
             }
         }
         return sumOfElements;

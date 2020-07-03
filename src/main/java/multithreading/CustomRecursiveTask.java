@@ -20,11 +20,8 @@ public class CustomRecursiveTask extends RecursiveTask<Long> {
             return ForkJoinTask.invokeAll(createSubTasks()).stream()
                     .mapToLong(ForkJoinTask::join)
                     .sum();
-        } else {
-            return elements.stream()
-                    .mapToLong(Long::longValue)
-                    .sum();
         }
+        return elements.stream().reduce(0L, Long::sum);
     }
  
     private Collection<CustomRecursiveTask> createSubTasks() {

@@ -12,8 +12,6 @@ public class CustomCallableTask implements Callable<Long> {
 
     @Override
     public Long call() {
-        return elements.stream()
-                .mapToLong(Long::longValue)
-                .sum();
+        return elements.stream().reduce(0L, Long::sum);
     }
 }
